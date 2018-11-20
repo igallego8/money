@@ -7,5 +7,6 @@ public class CheckoutService {
         CreditCard creditCard= Context.gateway.getCreditCard();
         ShoppingCart shoppingCart = Context.shoppingCart;
         BigDecimal total = shoppingCart.getTotal();
+        Ledger ledger = Context.gateway.getLedger(creditCard.getId());
     }
 }

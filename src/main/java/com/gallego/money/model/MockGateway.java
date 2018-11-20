@@ -8,4 +8,9 @@ public class MockGateway implements Gateway {
         return new CreditCard(new BigDecimal(100), new BigDecimal(0));
 
     }
+
+    @Override
+    public Ledger getLedger(Integer id) {
+        return new Ledger(id);
+    }
 }
