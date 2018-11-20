@@ -7,7 +7,7 @@ import org.junit.runner.RunWith;
 @RunWith(Cucumber.class)
 @CucumberOptions(features = "src/test/java/resources/money",
         glue= {"money"},
-        plugin = { "pretty","html:target/cucumber-reports" },
+        plugin = { "pretty","html:target/cucumber-reports", "json:target/cucumber.json" },
         monochrome = true)
 public class BuyWithCreditCard {
 

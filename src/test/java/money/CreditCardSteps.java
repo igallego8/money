@@ -25,7 +25,6 @@ public class CreditCardSteps {
         CheckoutService checkoutService = new CheckoutService();
         checkoutService.pay();
 
-
     }
 
     @When("^I select number of share (\\d+)$")
