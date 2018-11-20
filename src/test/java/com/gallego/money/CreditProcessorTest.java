@@ -20,6 +20,6 @@ public class CreditProcessorTest {
     @Test
     public void test (){
 
-        Assert.assertEquals("", creditProcessor.nextPayment() ,new BigDecimal(40.00));
+        Assert.assertEquals("Wrong value for next payment", creditProcessor.nextPayment() ,new BigDecimal(40.00));
     }
 }
