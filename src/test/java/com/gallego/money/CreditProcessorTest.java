@@ -18,8 +18,7 @@ public class CreditProcessorTest {
     CreditProcessor creditProcessor = new CreditProcessor(new CreditCard(new BigDecimal(100), new BigDecimal(0)));
 
     @Test
-    public void test (){
-
+    public void test_next_payment (){
         Assert.assertEquals("Wrong value for next payment", creditProcessor.nextPayment() ,new BigDecimal(40.00));
     }
 }
