@@ -8,5 +8,7 @@ public class CheckoutService {
         ShoppingCart shoppingCart = Context.shoppingCart;
         BigDecimal total = shoppingCart.getTotal();
         Ledger ledger = Context.gateway.getLedger(creditCard.getId());
+        Transac transac = new Transac(total);
+        ledger.registDebit(transac);
     }
 }

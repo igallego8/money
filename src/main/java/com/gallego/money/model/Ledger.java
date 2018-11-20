@@ -10,4 +10,9 @@ public class Ledger {
     public Ledger(Integer id) {
 
     }
+
+    public void registDebit(Transac transac) {
+        transac.setType(TransacType.DEBIT);
+        entries.add(transac);
+    }
 }
