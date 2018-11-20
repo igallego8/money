@@ -22,6 +22,9 @@ public class CreditCardSteps {
         // Write code here that turns the phrase above into concrete actions
         Product product =new Product(new BigDecimal(40.00));
         Context.shoppingCart.add(product);
+        CheckoutService checkoutService = new CheckoutService();
+        checkoutService.pay();
+
 
     }
 

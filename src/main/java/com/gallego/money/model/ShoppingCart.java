@@ -1,5 +1,6 @@
 package com.gallego.money.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,4 +15,9 @@ public class ShoppingCart {
     public List<Product> getProducts() {
         return products;
     }
+
+    public BigDecimal getTotal() {
+        return products.stream().map(p -> p.getAmount()).reduce(new BigDecimal(0), (x, y) -> x.add(y));
+    }
+
 }
