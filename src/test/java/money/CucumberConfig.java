@@ -1,9 +1,6 @@
 package money;
 
-import com.gallego.money.model.Context;
-import com.gallego.money.model.MockGateway;
 import cucumber.api.CucumberOptions;
-import cucumber.api.java.Before;
 import cucumber.api.junit.Cucumber;
 import org.junit.runner.RunWith;
 
@@ -11,6 +8,7 @@ import org.junit.runner.RunWith;
 @CucumberOptions(features = "src/test/java/resources/money",
         glue= {"money"},
         plugin = { "pretty","html:target/cucumber-reports"},
+        format = { "json:target/cucumber.json"},
         monochrome = true)
 public class CucumberConfig {
 

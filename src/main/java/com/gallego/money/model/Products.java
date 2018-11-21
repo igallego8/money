@@ -37,7 +37,7 @@ public class Products implements Iterable<Product> {
     }
 
     private BigDecimal getShareAmount(Product p) {
-        return p.getAmount().divide(new BigDecimal(p.getShares()));
+        return p.getDebt().divide(new BigDecimal(p.getShares()));
     }
 
     private BigDecimal calculateInterestCharge(Product p) {

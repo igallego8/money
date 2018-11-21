@@ -38,11 +38,12 @@ public class CreditCardSteps {
         checkoutService.payWithCredit(new Products(Context.shoppingCart.getProducts()),creditId, shares,  Context.shoppingCart.getTotal().subtract(new BigDecimal(0)));
     }
 
-    @Then("^I see the next credit card bill amount$")
-    public void i_see_the_next_credit_card_bill_amount() {
+    @Then("^I see the next credit card charge for the month (\\d+)$")
+    public void i_see_the_next_credit_card_charge_for_the_month(int month) throws Throwable {
         Products products = Context.gateway.getProductsBy(creditId);
         BigDecimal nextCharge = products.getNextCharge();
         Assert.assertEquals("Bad next charge",nextCharge.setScale(2,BigDecimal.ROUND_HALF_UP),new BigDecimal(13).setScale(2,BigDecimal.ROUND_HALF_UP));
 
     }
+
 }
