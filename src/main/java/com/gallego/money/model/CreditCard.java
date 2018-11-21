@@ -6,16 +6,25 @@ import java.util.Random;
 public class CreditCard {
     private BigDecimal quota;
     private BigDecimal debt;
+    private float interest;
 
-    private Integer id;
+    private Long id;
 
     public CreditCard(BigDecimal quota, BigDecimal debt) {
         this.quota = quota;
         this.debt = debt;
-        id = 0;
+        id = 1 + (long)(Math.random() * 10000);
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
+    }
+
+    public void setInterest(float interest) {
+        this.interest = interest;
+    }
+
+    public float getInterest() {
+        return interest;
     }
 }

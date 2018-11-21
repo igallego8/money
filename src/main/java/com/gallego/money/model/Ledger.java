@@ -1,18 +1,25 @@
 package com.gallego.money.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Ledger {
 
-    List<Transac> entries = new ArrayList<>();
+    private List<BigDecimal> entries = new ArrayList<>();
 
-    public Ledger(Integer id) {
+    private Long assestId;
+
+    public Ledger(Long assestId) {
+        this.assestId = assestId;
 
     }
 
-    public void registDebit(Transac transac) {
-        transac.setType(TransacType.DEBIT);
-        entries.add(transac);
+    public Long getAssestId() {
+        return assestId;
+    }
+
+    public void debit(BigDecimal amount) {
+        entries.add(amount.negate());
     }
 }
