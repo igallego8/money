@@ -9,6 +9,7 @@ public class Product {
     private Long creditId;
     private Float interest;
     private Integer shares;
+    private Integer sharesPaid=0;
 
     public Product(BigDecimal amount) {
         this.amount = amount;
@@ -56,5 +57,17 @@ public class Product {
 
     public boolean hasDebt() {
        return debt.compareTo(new BigDecimal(0)) > 0 ;
+    }
+
+    public void toDebt(BigDecimal subtract) {
+        debt=debt.subtract(subtract);
+    }
+
+    public Integer getSharesPaid() {
+        return sharesPaid;
+    }
+
+    public void incrementSharePaid() {
+        sharesPaid++;
     }
 }

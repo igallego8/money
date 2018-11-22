@@ -1,7 +1,6 @@
 package money;
 
 import com.gallego.money.model.*;
-import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -40,10 +39,22 @@ public class CreditCardSteps {
 
     @Then("^I see the next credit card charge for the month (\\d+)$")
     public void i_see_the_next_credit_card_charge_for_the_month(int month) throws Throwable {
-        Products products = Context.gateway.getProductsBy(creditId);
-        BigDecimal nextCharge = products.getNextCharge();
-        Assert.assertEquals("Bad next charge",nextCharge.setScale(2,BigDecimal.ROUND_HALF_UP),new BigDecimal(13).setScale(2,BigDecimal.ROUND_HALF_UP));
 
     }
+
+
+    @Then("^I see the next credit card charge for the month (\\d+) for \"([^\"]*)\" dollars$")
+    public void i_see_the_next_credit_card_charge_for_the_month_for_dollars(int month, String amount) throws Throwable {
+        Products products = Context.gateway.getProductsBy(creditId);
+        PaymentService paymentService = new PaymentService();
+        BigDecimal overAmount = BigDecimal.ZERO;
+        for (int i = 0; i < month-1; i++) {
+            overAmount=overAmount.add(paymentService.pay(creditId, products.getNextTotalCharge()));
+        }
+        BigDecimal nextCharge = products.getNextTotalCharge();
+        Assert.assertEquals("Bad next charge",new BigDecimal(amount).setScale(2,BigDecimal.ROUND_HALF_UP),nextCharge.setScale(2,BigDecimal.ROUND_HALF_UP));
+
+    }
+
 
 }
