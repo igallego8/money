@@ -106,5 +106,4 @@ public class CreditCardSteps {
         Assert.assertEquals("Wrong percentage for product 2 ",prod2,percentages.get(1).intValue());
         Assert.assertEquals("Wrong percentage for product 3 ",prod3,percentages.get(2).intValue());
     }
-
 }

@@ -98,4 +98,8 @@ public class Products implements Iterable<Product> {
         p.toCredit(amount);
         p.incrementSharePaid();
     }
+
+    public BigDecimal getTotal() {
+        return products.stream().filter(p -> p.getAmount().compareTo(BigDecimal.ZERO) > 0).map(p -> p.getAmount()).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 }
