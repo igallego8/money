@@ -19,6 +19,11 @@ public class Product {
         return amount;
     }
 
+
+    public void setAmount(BigDecimal amount) {
+         this.amount=amount;
+    }
+
     public void setInterest(Float interest) {
         this.interest = interest;
     }
@@ -74,5 +79,9 @@ public class Product {
     public void payOut() {
         debt = BigDecimal.ZERO;
         sharesPaid = shares;
+    }
+
+    public Integer percentagePaid(){
+       return 100-debt.multiply(BigDecimal.valueOf(100)).divide(amount).intValue();
     }
 }

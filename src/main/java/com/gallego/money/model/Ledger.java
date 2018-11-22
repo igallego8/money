@@ -22,4 +22,17 @@ public class Ledger {
     public void debit(BigDecimal amount) {
         entries.add(amount.negate());
     }
+
+
+    public BigDecimal getTotalDebits(){
+       return entries.stream().filter(d -> d.compareTo(BigDecimal.ZERO) < 0).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public BigDecimal getTotalCredits(){
+        return entries.stream().filter(d -> d.compareTo(BigDecimal.ZERO) > 0).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public void credit(BigDecimal amount) {
+        entries.add(amount);
+    }
 }

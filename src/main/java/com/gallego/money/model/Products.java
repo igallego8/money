@@ -26,6 +26,7 @@ public class Products implements Iterable<Product> {
             p.setInterest(interest);
             p.setShares(shares);
             p.setCreditId(creditId);
+            p.setAmount(amount.divide(new BigDecimal(products.size())));
         });
     }
 
