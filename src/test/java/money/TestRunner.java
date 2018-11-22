@@ -9,6 +9,6 @@ import org.junit.runner.RunWith;
         plugin = { "pretty","html:target/cucumber-html-reports","json:target/cucumber.json"},
         format = { "json:target/cucumber.json"},
         monochrome = true)
-public class CucumberConfig {
+public class TestRunner {
 
 }

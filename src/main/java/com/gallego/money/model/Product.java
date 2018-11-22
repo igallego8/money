@@ -59,7 +59,7 @@ public class Product {
        return debt.compareTo(new BigDecimal(0)) > 0 ;
     }
 
-    public void toDebt(BigDecimal subtract) {
+    public void toCredit(BigDecimal subtract) {
         debt=debt.subtract(subtract);
     }
 
@@ -69,5 +69,10 @@ public class Product {
 
     public void incrementSharePaid() {
         sharesPaid++;
+    }
+
+    public void payOut() {
+        debt = BigDecimal.ZERO;
+        sharesPaid = shares;
     }
 }

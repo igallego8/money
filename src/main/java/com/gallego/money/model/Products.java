@@ -62,30 +62,39 @@ public class Products implements Iterable<Product> {
         BigDecimal totalDebt = getTotalDebt();
         BigDecimal nextTotalCharge = getNextTotalCharge();
         if (amount.compareTo(totalDebt) > -1){
-            products.stream().filter(p -> p.hasDebt()).forEach(p-> p.setDebt(BigDecimal.valueOf(0)));
-            return amount.subtract(totalDebt);
+            return payOut(amount, totalDebt);
         }else if (amount.compareTo(nextTotalCharge) > -1){
-            products.stream().filter(p -> p.hasDebt()).forEach(p -> {
-                p.toDebt(getShareAmount(p));
-                p.incrementSharePaid();
-            });
-            BigDecimal extra = amount.subtract(nextTotalCharge);
-            for (Product p:products.stream().filter(p -> p.hasDebt()).collect(Collectors.toList())){
-                if (p.hasDebt() ){
-                    if ( extra.compareTo(p.getDebt()) > -1){
-                        p.toDebt(extra.subtract(p.getDebt()));
-                        p.incrementSharePaid();
-                    }else{
-                        p.toDebt(extra);
-                    }
-                    if(extra.compareTo(BigDecimal.ZERO) == 0){
-                        break;
-                    }
-                }
-            }
-            return BigDecimal.ZERO;
+            return payShare(amount, nextTotalCharge);
         }else{
             throw new PaymentException("Insufficient founds to pay credit");
         }
+    }
+
+    private BigDecimal payShare(BigDecimal amount, BigDecimal nextTotalCharge) {
+        products.stream().filter(Product::hasDebt).forEach(p -> credit(p, getShareAmount(p)));
+        BigDecimal extra = amount.subtract(nextTotalCharge);
+        for (Product p:products.stream().filter(Product::hasDebt).collect(Collectors.toList())){
+            if (p.hasDebt() ){
+                if ( extra.compareTo(p.getDebt()) > -1){
+                    credit(p,extra.subtract(p.getDebt()));
+                }else{
+                    p.toCredit(extra);
+                }
+                if(extra.compareTo(BigDecimal.ZERO) == 0){
+                    break;
+                }
+            }
+        }
+        return BigDecimal.ZERO;
+    }
+
+    private BigDecimal payOut(BigDecimal amount, BigDecimal totalDebt) {
+        products.stream().filter(Product::hasDebt).forEach(Product::payOut);
+        return amount.subtract(totalDebt);
+    }
+
+    private void credit(Product p, BigDecimal amount) {
+        p.toCredit(amount);
+        p.incrementSharePaid();
     }
 }

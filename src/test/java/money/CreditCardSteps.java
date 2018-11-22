@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 
 public class CreditCardSteps {
 
-
     private Long creditId;
 
     @Given("^a buy of (\\d+) dollars$")
@@ -30,18 +29,11 @@ public class CreditCardSteps {
         Context.gateway.persist(creditCard);
     }
 
-
     @When("^I select number of share (\\d+)$")
     public void i_select_number_of_share(int shares) {
         CheckoutService checkoutService = new CheckoutService();
         checkoutService.payWithCredit(new Products(Context.shoppingCart.getProducts()),creditId, shares,  Context.shoppingCart.getTotal().subtract(new BigDecimal(0)));
     }
-
-    @Then("^I see the next credit card charge for the month (\\d+)$")
-    public void i_see_the_next_credit_card_charge_for_the_month(int month) throws Throwable {
-
-    }
-
 
     @Then("^I see the next credit card charge for the month (\\d+) for \"([^\"]*)\" dollars$")
     public void i_see_the_next_credit_card_charge_for_the_month_for_dollars(int month, String amount) throws Throwable {
@@ -53,8 +45,5 @@ public class CreditCardSteps {
         }
         BigDecimal nextCharge = products.getNextTotalCharge();
         Assert.assertEquals("Bad next charge",new BigDecimal(amount).setScale(2,BigDecimal.ROUND_HALF_UP),nextCharge.setScale(2,BigDecimal.ROUND_HALF_UP));
-
     }
-
-
 }

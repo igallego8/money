@@ -82,7 +82,7 @@
                 <configuration>
                     <testFailureIgnore>true</testFailureIgnore>
                     <includes>
-                        <exclude>**/CucumberConfig.java</exclude>
+                        <exclude>**/TestRunner.java</exclude>
                     </includes>
                 </configuration>
             </plugin>
