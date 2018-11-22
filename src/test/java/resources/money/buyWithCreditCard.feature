@@ -18,12 +18,12 @@ Feature: Buying with credit card
 
 
 
-  Scenario Outline: buy with credit card
+  Scenario Outline: buy products with credit card
     Given buy of products for amount of "<product_amount_1>" , "<product_amount_2>" and "<product_amount_3>"
     And using a credit card with interest of "<interest>" and number of share <shares>
     When pay credit for <months_paid> paid
     Then I see the percentage of <product_1_paid> , <product_2_paid> and <product_3_paid>
-    
+
   Examples:
     |product_amount_1|product_amount_2|product_amount_3|shares|months_paid|product_1_paid|product_2_paid|product_3_paid|interest|
     |200             |100             |300             |5     |6          |100           |100           |100           |2.0     |
