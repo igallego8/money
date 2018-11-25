@@ -1,8 +1,10 @@
-package com.gallego.money.model;
+package com.gallego.money.checkout;
+
+import com.gallego.money.entity.Context;
+import com.gallego.money.entity.CreditCard;
+import com.gallego.money.entity.Products;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
 
 public class CheckoutService {
 

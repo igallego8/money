@@ -1,4 +1,4 @@
-package com.gallego.money.model;
+package com.gallego.money.entity;
 
 import com.gallego.money.payment.PaymentException;
 
@@ -23,21 +23,22 @@ public class Products implements Iterable<Product> {
 
 
     public void setPaymentInfo(Long creditId, Integer shares, BigDecimal amount, Float interest) {
-        products.stream().forEach(p -> {
-            p.setDebt(amount.divide(new BigDecimal(products.size())));
+        BigDecimal total = getTotal();
+        products.forEach(p -> {
+            BigDecimal d = amount.multiply(p.getAmount().divide(total, 3));
+            p.setDebt(p.getAmount().compareTo(d) > -1 ? d : p.getAmount());
             p.setInterest(interest);
             p.setShares(shares);
             p.setCreditId(creditId);
-            p.setAmount(amount.divide(new BigDecimal(products.size())));
         });
     }
 
     public void setTransactionInfo(Long transactionId) {
-        products.stream().forEach(p -> p.setTransactionId(transactionId));
+        products.forEach(p -> p.setTransactionId(transactionId));
     }
 
     public BigDecimal getNextTotalCharge() {
-      return  products.stream().filter(p -> p.hasDebt()).map(this::getNextCharge).reduce(new BigDecimal(0), BigDecimal::add);
+      return  products.stream().filter(Product::hasDebt).map(this::getNextCharge).reduce(new BigDecimal(0), BigDecimal::add);
     }
 
 

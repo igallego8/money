@@ -1,7 +1,6 @@
-package com.gallego.money.model;
+package com.gallego.money.entity;
 
 import java.math.BigDecimal;
-import java.util.Random;
 
 public class CreditCard {
     private BigDecimal quota;

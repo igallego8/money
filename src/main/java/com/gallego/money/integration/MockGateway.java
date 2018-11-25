@@ -1,6 +1,7 @@
-package com.gallego.money.model;
+package com.gallego.money.integration;
 
-import java.math.BigDecimal;
+import com.gallego.money.entity.*;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -21,14 +22,14 @@ public class MockGateway implements Gateway {
 
     @Override
     public Ledger getLedger(Long id) {
-        return ledgersPersisted.stream().filter(l -> l.getAssestId() == id).findFirst().orElse(new Ledger(0L));
+        return ledgersPersisted.stream().filter(l -> l.getAssetId().equals(id)).findFirst().orElse(new Ledger(0L));
     }
 
     @Override
     public CreditCard getCreditCardBy(Long id) {
         System.out.println(" Credit Cards list size :: " + creditCards.size());
         creditCards.stream().forEach(c -> System.out.println("Credit Card :: "+ c.getId()));
-        return creditCards.stream().filter(c-> c.getId() == id).findFirst().orElseThrow(()->new NullPointerException("Credit not found"));
+        return creditCards.stream().filter(c-> c.getId().equals(id)).findFirst().orElseThrow(()->new NullPointerException("Credit not found"));
     }
 
     @Override
@@ -56,6 +57,11 @@ public class MockGateway implements Gateway {
 
     @Override
     public Products getProductsBy(Long creditId) {
-      return  new Products(productsPersisted.stream().filter(p -> p.getCreditId() == creditId).collect(Collectors.toList()));
+      return  new Products(productsPersisted.stream().filter(p -> p.getCreditId().equals(creditId)).collect(Collectors.toList()));
+    }
+
+    @Override
+    public List<CreditCard> fetchCreditCards() {
+        return creditCards;
     }
 }

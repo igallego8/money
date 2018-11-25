@@ -1,4 +1,4 @@
-package com.gallego.money.model;
+package com.gallego.money.entity;
 
 import java.util.Iterator;
 import java.util.List;

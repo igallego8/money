@@ -1,7 +1,7 @@
 package money;
 
-import com.gallego.money.model.Context;
-import com.gallego.money.model.MockGateway;
+import com.gallego.money.entity.Context;
+import com.gallego.money.integration.MockGateway;
 import cucumber.api.java.Before;
 
 public class Hooks {

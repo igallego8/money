@@ -1,3 +1,17 @@
+server:
+  port: 8091
+spring:
+  profiles:
+    active: DEV
 ---
-spring
-server.port=8090
+server:
+  port: 8090
+spring:
+  application:
+    name: money
+  profiles: PROD
+---
+spring:
+  application:
+    name: MONEY DEV
+  profiles: DEV

@@ -1,6 +1,9 @@
 package money;
 
-import com.gallego.money.model.*;
+import com.gallego.money.checkout.CheckoutService;
+import com.gallego.money.checkout.DefaultCheckoutProcess;
+import com.gallego.money.entity.*;
+import com.gallego.money.payment.PaymentService;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -35,7 +38,7 @@ public class CreditCardSteps {
 
     @When("^I select number of share (\\d+)$")
     public void i_select_number_of_share(int shares) {
-        CheckoutService checkoutService = new CheckoutService();
+        CheckoutService checkoutService = createCheckoutService();
         checkoutService.payWithCredit(new Products(Context.shoppingCart.getProducts()),creditId, shares,  Context.shoppingCart.getTotal().subtract(new BigDecimal(0)));
     }
 
@@ -70,18 +73,18 @@ public class CreditCardSteps {
         cart.add(new Product(new BigDecimal(prod3)));
     }
 
-
-
     @Given("^using a credit card with interest of \"([^\"]*)\" and number of share (\\d+)$")
     public void using_a_credit_card_with_interest_of_and_number_of_share(String interest, int shares) throws Throwable {
         Iterator<Product> it=Context.shoppingCart.getProducts().iterator();
-        CheckoutService checkoutService= new CheckoutService();
+        CheckoutService checkoutService = createCheckoutService();
         while(it.hasNext()){
             Product p = it.next();
-            p.setCreditId(creditId);
-            p.setInterest(Float.valueOf(interest));
             checkoutService.payWithCredit(new Products(Arrays.asList(p)),creditId,shares,p.getAmount());
         }
+    }
+
+    private CheckoutService createCheckoutService() {
+        return new CheckoutService(new DefaultCheckoutProcess());
     }
 
 

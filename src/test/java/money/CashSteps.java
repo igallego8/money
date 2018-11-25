@@ -1,16 +1,15 @@
 package money;
 
-import com.gallego.money.model.*;
+import com.gallego.money.checkout.CheckoutService;
+import com.gallego.money.checkout.DefaultCheckoutProcess;
+import com.gallego.money.entity.*;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
 
 
 public class CashSteps {
@@ -29,7 +28,7 @@ public class CashSteps {
     public void i_buy_a_product_amount_of_paid_with_cash(String amount1,String amount2 ) {
         Product product1 = new Product(new BigDecimal(amount1));
         Product product2 = new Product(new BigDecimal(amount2));
-        CheckoutService checkoutService = new CheckoutService();
+        CheckoutService checkoutService = new CheckoutService(new DefaultCheckoutProcess());
         checkoutService.payWithCash(new Products(Arrays.asList(product1,product2)),bankId);
     }
 

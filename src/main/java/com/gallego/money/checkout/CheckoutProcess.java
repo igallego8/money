@@ -1,8 +1,10 @@
-package com.gallego.money.model;
+package com.gallego.money.checkout;
+
+import com.gallego.money.entity.Products;
 
 import java.math.BigDecimal;
 
-public interface CheckoutProcess {
+public abstract class  CheckoutProcess {
 
-    void process(Products products, Long assetId, BigDecimal amount);
+  protected abstract void process(Products products, Long assetId, BigDecimal amount);
 }

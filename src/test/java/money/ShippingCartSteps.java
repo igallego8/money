@@ -1,11 +1,9 @@
 package money;
 
 
-import com.gallego.money.model.Context;
-import com.gallego.money.model.MockGateway;
-import com.gallego.money.model.Product;
-import com.gallego.money.model.ShoppingCart;
-import cucumber.api.java.Before;
+import com.gallego.money.entity.Context;
+import com.gallego.money.entity.Product;
+import com.gallego.money.entity.ShoppingCart;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;

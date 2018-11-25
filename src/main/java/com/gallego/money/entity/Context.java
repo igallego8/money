@@ -1,4 +1,4 @@
-package com.gallego.money.model;
+package com.gallego.money.entity;
 
 import com.gallego.money.integration.Gateway;
 

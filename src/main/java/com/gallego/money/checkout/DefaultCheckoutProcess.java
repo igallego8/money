@@ -1,14 +1,14 @@
 package com.gallego.money.checkout;
 
-import com.gallego.money.model.Context;
-import com.gallego.money.model.Ledger;
-import com.gallego.money.model.Products;
-import com.gallego.money.model.Transac;
+import com.gallego.money.entity.Context;
+import com.gallego.money.entity.Ledger;
+import com.gallego.money.entity.Products;
+import com.gallego.money.entity.Transac;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class DefaulCheckoutProcess implements CheckoutProcess {
+public class DefaultCheckoutProcess extends CheckoutProcess {
 
     @Override
     public void process(Products products, Long assetId, BigDecimal amount) {

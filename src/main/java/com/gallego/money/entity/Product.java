@@ -1,4 +1,4 @@
-package com.gallego.money.model;
+package com.gallego.money.entity;
 
 import java.math.BigDecimal;
 
@@ -61,7 +61,7 @@ public class Product {
     }
 
     public boolean hasDebt() {
-       return debt.compareTo(new BigDecimal(0)) > 0 ;
+       return debt.compareTo(BigDecimal.ZERO) > 0 ;
     }
 
     public void toCredit(BigDecimal subtract) {
