@@ -12,8 +12,8 @@ public class Transac {
         id = 1 + (long) (Math.random() * 10000);
     }
 
-    public void setType(TransacType debit) {
-    }
+
+    
 
     public void setDate(Date date) {
     }

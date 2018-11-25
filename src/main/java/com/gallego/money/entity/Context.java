@@ -1,6 +1,6 @@
 package com.gallego.money.model;
 
-import javax.swing.*;
+import com.gallego.money.integration.Gateway;
 
 public class Context {
     public static Gateway gateway;

@@ -1,5 +1,7 @@
 package com.gallego.money.model;
 
+import com.gallego.money.payment.PaymentException;
+
 import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;

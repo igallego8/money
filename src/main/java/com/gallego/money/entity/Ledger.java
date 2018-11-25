@@ -8,15 +8,15 @@ public class Ledger {
 
     private List<BigDecimal> entries = new ArrayList<>();
 
-    private Long assestId;
+    private Long assetId;
 
-    public Ledger(Long assestId) {
-        this.assestId = assestId;
+    public Ledger(Long assetId) {
+        this.assetId = assetId;
 
     }
 
-    public Long getAssestId() {
-        return assestId;
+    public Long getAssetId() {
+        return assetId;
     }
 
     public void debit(BigDecimal amount) {
