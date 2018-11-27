@@ -8,7 +8,9 @@ pipeline {
     }
     stage('Compile') {
       steps {
-        tool 'maven3'
+        sh '''def maven_tool= tool name: \'maven\', type: \'maven\'
+      def maven_home = "${maven_tool}/bin/mvn"
+      sh "${maven_home} clean package"'''
       }
     }
   }
