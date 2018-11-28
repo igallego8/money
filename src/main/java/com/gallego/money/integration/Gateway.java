@@ -1,6 +1,6 @@
 package com.gallego.money.integration;
 
-import com.gallego.money.entity.CreditCard;
+import com.gallego.money.entity.Credit;
 import com.gallego.money.entity.Ledger;
 import com.gallego.money.entity.Products;
 import com.gallego.money.entity.Transac;
@@ -11,7 +11,7 @@ public interface Gateway {
 
     Ledger getLedger(Long id);
 
-    CreditCard getCreditCardBy(Long id);
+    Credit getCreditCardBy(Long id);
 
     void persist(Products products);
 
@@ -19,9 +19,11 @@ public interface Gateway {
 
     void persist(Ledger ledger);
 
-    void persist(CreditCard creditCard);
+    void persist(Credit credit);
 
     Products getProductsBy(Long creditId);
 
-    List<CreditCard> fetchCreditCards();
+    List<Credit> fetchCredits();
+
+    Products fetchProducts();
 }

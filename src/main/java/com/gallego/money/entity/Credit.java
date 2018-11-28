@@ -2,16 +2,22 @@ package com.gallego.money.entity;
 
 import java.math.BigDecimal;
 
-public class CreditCard {
+public class Credit {
     private BigDecimal quota;
     private BigDecimal debt;
     private float interest;
 
     private Long id;
 
-    public CreditCard(BigDecimal quota, BigDecimal debt) {
+    public Credit(BigDecimal quota, BigDecimal debt) {
         this.quota = quota;
         this.debt = debt;
+        id = 1 + (long)(Math.random() * 10000);
+    }
+
+    public Credit(BigDecimal quota, float interest) {
+        this.quota = quota;
+        this.interest = interest;
         id = 1 + (long)(Math.random() * 10000);
     }
 
@@ -25,5 +31,9 @@ public class CreditCard {
 
     public float getInterest() {
         return interest;
+    }
+
+    public BigDecimal getDebt(){
+        return debt;
     }
 }

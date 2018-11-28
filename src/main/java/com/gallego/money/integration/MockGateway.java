@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class MockGateway implements Gateway {
 
-    List<CreditCard> creditCards = new ArrayList<>();
+    List<Credit> credits = new ArrayList<>();
     List<Product> productsPersisted = new ArrayList<>();
     List<Transac> transactsPersisted = new ArrayList<>();
 
@@ -26,10 +26,10 @@ public class MockGateway implements Gateway {
     }
 
     @Override
-    public CreditCard getCreditCardBy(Long id) {
-        System.out.println(" Credit Cards list size :: " + creditCards.size());
-        creditCards.stream().forEach(c -> System.out.println("Credit Card :: "+ c.getId()));
-        return creditCards.stream().filter(c-> c.getId().equals(id)).findFirst().orElseThrow(()->new NullPointerException("Credit not found"));
+    public Credit getCreditCardBy(Long id) {
+        System.out.println(" Credit Cards list size :: " + credits.size());
+        credits.stream().forEach(c -> System.out.println("Credit Card :: "+ c.getId()));
+        return credits.stream().filter(c-> c.getId().equals(id)).findFirst().orElseThrow(()->new NullPointerException("Credit not found"));
     }
 
     @Override
@@ -51,8 +51,8 @@ public class MockGateway implements Gateway {
     }
 
     @Override
-    public void persist(CreditCard creditCard) {
-        creditCards.add(creditCard);
+    public void persist(Credit credit) {
+        credits.add(credit);
     }
 
     @Override
@@ -61,7 +61,12 @@ public class MockGateway implements Gateway {
     }
 
     @Override
-    public List<CreditCard> fetchCreditCards() {
-        return creditCards;
+    public List<Credit> fetchCredits() {
+        return credits;
+    }
+
+    @Override
+    public Products fetchProducts() {
+        return  new Products(productsPersisted.stream().collect(Collectors.toList()));
     }
 }

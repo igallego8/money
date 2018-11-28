@@ -29,11 +29,11 @@ public class CreditCardSteps {
 
     @Given("^using a credit card with interest of \"([^\"]*)\"$")
     public void using_a_credit_card_with_interest_of(String interest){
-        CreditCard creditCard = new CreditCard(new BigDecimal(100),new BigDecimal(0));
-        creditId = creditCard.getId();
-        creditCard.setInterest(Float.valueOf(interest));
-        Context.gateway.persist(new Ledger(creditCard.getId()));
-        Context.gateway.persist(creditCard);
+        Credit credit = new Credit(new BigDecimal(100),new BigDecimal(0));
+        creditId = credit.getId();
+        credit.setInterest(Float.valueOf(interest));
+        Context.gateway.persist(new Ledger(credit.getId()));
+        Context.gateway.persist(credit);
     }
 
     @When("^I select number of share (\\d+)$")
@@ -63,9 +63,9 @@ public class CreditCardSteps {
 
     @Given("^buy of products for amount of \"([^\"]*)\" , \"([^\"]*)\" and \"([^\"]*)\"$")
     public void buy_of_products_for_amount_of_and(String prod1, String prod2, String prod3){
-        CreditCard creditCard = new CreditCard(new BigDecimal(10000),new BigDecimal(0));
-        creditId = creditCard.getId();
-        Context.gateway.persist(creditCard);
+        Credit credit = new Credit(new BigDecimal(10000),new BigDecimal(0));
+        creditId = credit.getId();
+        Context.gateway.persist(credit);
         ShoppingCart cart = new ShoppingCart();
         Context.shoppingCart = cart;
         cart.add(new Product(new BigDecimal(prod1)));

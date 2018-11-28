@@ -10,9 +10,16 @@ public class Product {
     private Float interest;
     private Integer shares;
     private Integer sharesPaid=0;
+    private String description = this.hashCode()+"";
 
     public Product(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    public Product(BigDecimal amount, String description, Integer shares) {
+        this.amount = amount;
+        this.description = description;
+        this.shares = shares;
     }
 
     public BigDecimal getAmount() {
@@ -83,5 +90,13 @@ public class Product {
 
     public Integer percentagePaid(){
        return 100-debt.multiply(BigDecimal.valueOf(100)).divide(amount).intValue();
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
