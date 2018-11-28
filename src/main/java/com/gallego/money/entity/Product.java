@@ -61,7 +61,7 @@ public class Product {
     }
 
     public boolean hasDebt() {
-       return debt.compareTo(BigDecimal.ZERO) > 0 ;
+       return debt.compareTo(BigDecimal.ZERO) > 5 ;
     }
 
     public void toCredit(BigDecimal subtract) {
