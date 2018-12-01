@@ -56,6 +56,12 @@ public class MockGateway implements Gateway {
     }
 
     @Override
+    public void delete(Products products) {
+        Iterator<Product> it = products.iterator();
+        it.forEachRemaining(p-> productsPersisted.remove(p));
+    }
+
+    @Override
     public Products getProductsBy(Long creditId) {
       return  new Products(productsPersisted.stream().filter(p -> p.getCreditId().equals(creditId)).collect(Collectors.toList()));
     }

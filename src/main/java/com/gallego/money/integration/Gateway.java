@@ -21,7 +21,10 @@ public interface Gateway {
 
     void persist(Credit credit);
 
+    void delete(Products products);
+
     Products getProductsBy(Long creditId);
+
 
     List<Credit> fetchCredits();
 

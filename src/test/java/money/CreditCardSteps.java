@@ -1,5 +1,6 @@
 package money;
 
+import com.gallego.money.DeferService;
 import com.gallego.money.checkout.CheckoutService;
 import com.gallego.money.checkout.DefaultCheckoutProcess;
 import com.gallego.money.entity.*;
@@ -109,4 +110,15 @@ public class CreditCardSteps {
         Assert.assertEquals("Wrong percentage for product 2 ",prod2,percentages.get(1).intValue());
         Assert.assertEquals("Wrong percentage for product 3 ",prod3,percentages.get(2).intValue());
     }
+
+
+    @When("^I defer the debt with interest of \"([^\"]*)\" and number of share (\\d+)$")
+    public void i_defer_the_debt_with_interest_of_and_number_of_share(String interest, int shares) throws Throwable {
+        DeferService deferService = new DeferService();
+        deferService.defer(creditId, Float.valueOf(interest), shares);
+    }
+
+
+
+
 }
