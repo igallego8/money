@@ -22,7 +22,7 @@ public class MockGateway implements Gateway {
 
     @Override
     public Ledger getLedger(Long id) {
-        return ledgersPersisted.stream().filter(l -> l.getAssetId().equals(id)).findFirst().orElse(new Ledger(0L));
+        return ledgersPersisted.stream().filter(l -> l.getAssetId().equals(id)).findFirst().orElseThrow(()->new LedgerNotFoundException("Ledger not found for credit " + id));
     }
 
     @Override

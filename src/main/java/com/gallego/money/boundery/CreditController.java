@@ -1,8 +1,10 @@
 package com.gallego.money.boundery;
 
+import com.gallego.money.checkout.DeferService;
 import com.gallego.money.entity.Context;
 import com.gallego.money.entity.Credit;
 import com.gallego.money.model.CreditDto;
+import com.gallego.money.model.CreditReferRequest;
 import com.gallego.money.model.CreditRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -41,4 +43,10 @@ public class CreditController {
         return ResponseEntity.ok(creditsDto);
     }
 
+    @PostMapping("/{creditId}/refer")
+    public ResponseEntity referCredit(@PathVariable ("creditId") Long creditId,@RequestBody CreditReferRequest request){
+        DeferService deferService = new DeferService();
+        deferService.defer(creditId,request.interest,request.shares);
+        return ResponseEntity.ok().build();
+    }
 }

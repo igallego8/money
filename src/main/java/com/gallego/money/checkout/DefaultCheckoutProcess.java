@@ -4,6 +4,7 @@ import com.gallego.money.entity.Context;
 import com.gallego.money.entity.Ledger;
 import com.gallego.money.entity.Products;
 import com.gallego.money.entity.Transac;
+import com.gallego.money.integration.LedgerNotFoundException;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -23,7 +24,15 @@ public class DefaultCheckoutProcess extends CheckoutProcess {
     }
 
     private void processLedger(Long creditId, BigDecimal amount) {
-        Ledger ledger = Context.gateway.getLedger(creditId);
+        Ledger ledger = null;
+        try{
+             ledger = Context.gateway.getLedger(creditId);
+        }catch(LedgerNotFoundException ex){
+                ledger = new Ledger(creditId);
+                Context.gateway.persist(ledger);
+
+        }
+
         ledger.debit(amount);
     }
 }

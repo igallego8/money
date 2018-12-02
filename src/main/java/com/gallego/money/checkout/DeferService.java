@@ -1,4 +1,4 @@
-package com.gallego.money;
+package com.gallego.money.checkout;
 
 import com.gallego.money.entity.Context;
 import com.gallego.money.entity.Product;

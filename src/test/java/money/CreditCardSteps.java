@@ -1,6 +1,7 @@
 package money;
 
-import com.gallego.money.DeferService;
+import com.gallego.money.PurchaseCreditService;
+import com.gallego.money.checkout.DeferService;
 import com.gallego.money.checkout.CheckoutService;
 import com.gallego.money.checkout.DefaultCheckoutProcess;
 import com.gallego.money.entity.*;
@@ -10,6 +11,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
+import javax.sound.midi.SysexMessage;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +22,8 @@ import java.util.List;
 public class CreditCardSteps {
 
     private Long creditId;
+    private Long old_creditId;
+
 
     @Given("^a buy of (\\d+) dollars$")
     public void a_buy_of_dollars(int amount) {
@@ -66,6 +70,7 @@ public class CreditCardSteps {
     public void buy_of_products_for_amount_of_and(String prod1, String prod2, String prod3){
         Credit credit = new Credit(new BigDecimal(10000),new BigDecimal(0));
         creditId = credit.getId();
+        Context.gateway.persist(new Ledger(credit.getId()));
         Context.gateway.persist(credit);
         ShoppingCart cart = new ShoppingCart();
         Context.shoppingCart = cart;
@@ -120,5 +125,33 @@ public class CreditCardSteps {
 
 
 
+    @When("^an debt is purchased with interest of \"([^\"]*)\" and number of share (\\d+)$")
+    public void an_debt_is_purchased_with_interest_of_and_number_of_share(String interest, int shares) {
+        Products products = Context.gateway.getProductsBy(creditId);
+        PurchaseCreditService purchaseCreditService = new PurchaseCreditService();
+        Credit newCredit =purchaseCreditService.purchase(creditId, products.getTotalDebt(), shares, Float.valueOf(interest));
+        old_creditId = creditId;
+        creditId = newCredit.getId();
+
+    }
+
+    @Then("^I see new credit with debt of \"([^\"]*)\" and shares (\\d+)$")
+    public void i_see_new_credit_with_debt_of_and_shares(String amount, int shares)  {
+        List<Credit> credits= Context.gateway.fetchCredits();
+        Assert.assertEquals("",1,credits.stream().filter(c-> c.getDebt().compareTo(new BigDecimal(amount))==0).count());
+
+
+
+    }
+
+    @Then("^the old ledger must have credit for \"([^\"]*)\" and new debit for \"([^\"]*)\"$")
+    public void the_old_ledger_must_have_credit_for_and_new_credit_for(String amount_credit, String amount_debt) {
+        Ledger ledger = Context.gateway.getLedger(creditId);
+        Ledger old_credit_ledger = Context.gateway.getLedger(old_creditId);
+        Assert.assertTrue("",old_credit_ledger.getTotalCredits().compareTo(new BigDecimal(amount_credit))==0);
+        Assert.assertTrue("",ledger.getTotalDebits().compareTo(new BigDecimal(amount_debt).multiply(BigDecimal.valueOf(-1)))==0);
+
+
+    }
 
 }
