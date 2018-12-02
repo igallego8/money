@@ -1,6 +1,6 @@
-Feature: Defer credit
+Feature: Purchase credit
 
-  Scenario Outline: defer debt
+  Scenario Outline: purchase credit
     Given buy of products for amount of "<product_amount_1>" , "<product_amount_2>" and "<product_amount_3>"
     And using a credit card with interest of "<interest>" and number of share <shares>
     When an debt is purchased with interest of "<purchase_interest>" and number of share <purchase_shares>
