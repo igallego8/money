@@ -91,19 +91,19 @@ public class MockGateway implements Gateway {
 
     @Override
     public User findUserBy(String userName) {
-        return usersPersisted.stream().filter(u -> userName.equals(u.getName())).findFirst().orElseThrow(() -> {
-            throw new RegistryNotFoundException("User not found");
-        });
-    }
+        return usersPersisted.stream().filter(u -> userName.equals(u.getName())).findFirst().get();//.orElseThrow(() -> {
+          //  throw new RegistryNotFoundException("User not found");
+        //});
+        }
 
     @Override
     public User findUserBy(Long userId) {
-        return usersPersisted.stream().filter(u -> u.getId().equals(userId)).findFirst().orElseThrow(()->new RegistryNotFoundException("User not found"));
+        return usersPersisted.stream().filter(u -> u.getId().equals(userId)).findFirst().get();//.orElseThrow(() -> new RegistryNotFoundException("User not found"));
     }
 
     @Override
     public AppFunction findAppFunctionBy(String name) {
-        return functions.stream().filter(f-> name.equals(f.getName())).findFirst().orElseThrow(()-> new RegistryNotFoundException("Function not found"));
+        return functions.stream().filter(f -> name.equals(f.getName())).findFirst().get();//.orElseThrow(()-> new RegistryNotFoundException("Function not found"));
     }
 
     @Override
@@ -132,7 +132,7 @@ public class MockGateway implements Gateway {
         while(it.hasNext()){
             Product product = it.next();
             if(product.hasDebt()){
-                Product productToReplace = productsPersisted.stream().filter(p -> p.getCreditId().equals(product.getCreditId())).findFirst().orElseThrow(()-> new RegistryNotFoundException("Function not found"));
+                Product productToReplace = productsPersisted.stream().filter(p -> p.getCreditId().equals(product.getCreditId())).findFirst().get();//orElseThrow(()-> new RegistryNotFoundException("Function not found"));
                 productsPersisted.remove(productToReplace);
                 productsPersisted.add(product);
             }else{
