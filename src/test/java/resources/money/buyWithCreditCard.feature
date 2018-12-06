@@ -26,7 +26,6 @@ Feature: Buying with credit card
 
   Examples:
     |product_amount_1|product_amount_2|product_amount_3|shares|months_paid|product_1_paid|product_2_paid|product_3_paid|interest|
-    |200             |100             |300             |5     |6          |100           |100           |100           |2.0     |
     |200             |100             |300             |5     |5          |80            |80            |80            |2.0     |
     |200             |100             |300             |5     |4          |60            |60            |60            |2.0     |
     |200             |100             |300             |5     |3          |40            |40            |40            |2.0     |

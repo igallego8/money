@@ -2,9 +2,13 @@ package com.gallego.money.checkout;
 
 import com.gallego.money.entity.Context;
 import com.gallego.money.entity.Credit;
+import com.gallego.money.entity.Product;
 import com.gallego.money.entity.Products;
+import com.gallego.money.model.BuyCreditRequest;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CheckoutService {
 
@@ -14,19 +18,26 @@ public class CheckoutService {
         this.checkoutProcess = checkoutProcess;
     }
 
-    public void payWithCredit(Products products, Long creditId, Integer shares, BigDecimal amount)  {
-        setCreditInfo(products, creditId, shares, amount);
-        checkoutProcess.process(products, creditId, amount);
-    }
-
     public void payWithCash(Products products, Long bankId) {
         BigDecimal amount = products.getTotal();
         checkoutProcess.process(products, bankId, amount);
     }
 
-    private void setCreditInfo(Products products, Long creditId, Integer shares, BigDecimal amount) {
-        Credit credit = Context.gateway.getCreditCardBy(creditId);
-        products.setPaymentInfo(credit.getId(),shares, amount, credit.getInterest());
+    public void payWithCredit(BuyCreditRequest request) {
+        Products p = createProduct(request);
+        setCreditInfo(p, request);
+        checkoutProcess.process(p, request.creditId, request.amount);
+    }
+
+    private Products createProduct(BuyCreditRequest request) {
+        List<Product> products = new ArrayList<>();
+        products.add(new Product( request.amount, request.description , request.shares));
+        return new Products(products);
+    }
+
+    private void setCreditInfo(Products products, BuyCreditRequest request) {
+        Credit credit = Context.gateway.getCreditCardBy(request.creditId);
+        products.setPaymentInfo(credit.getId(),request.shares, request.amount, credit.getInterest());
         Context.gateway.persist(products);
     }
 }

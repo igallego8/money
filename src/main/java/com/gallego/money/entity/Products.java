@@ -26,7 +26,7 @@ public class Products implements Iterable<Product> {
         BigDecimal total = getTotal();
         products.forEach(p -> {
             BigDecimal d = amount.multiply(p.getAmount().divide(total, 3));
-            p.setDebt(p.getAmount().compareTo(d) > -1 ? d : p.getAmount());
+            p.setDebt(d);
             p.setInterest(interest);
             p.setShares(shares);
             p.setCreditId(creditId);
@@ -38,12 +38,12 @@ public class Products implements Iterable<Product> {
     }
 
     public BigDecimal getNextTotalCharge() {
-      return  products.stream().filter(Product::hasDebt).map(this::getNextCharge).reduce(new BigDecimal(0), BigDecimal::add);
+      return  products.stream().filter(Product::hasDebt).map(this::getNextCharge).reduce(new BigDecimal(0), BigDecimal::add).setScale(1,BigDecimal.ROUND_HALF_UP);
     }
 
 
     public BigDecimal getTotalDebt() {
-        return  products.stream().filter(p -> p.hasDebt()).map(this::getTotalCharge).reduce(new BigDecimal(0), BigDecimal::add);
+        return  products.stream().filter(p -> p.hasDebt()).map(this::getTotalCharge).reduce(new BigDecimal(0), BigDecimal::add).setScale(1,BigDecimal.ROUND_HALF_UP);
     }
 
     private BigDecimal getNextCharge(Product p) {

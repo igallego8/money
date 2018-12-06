@@ -40,16 +40,14 @@ public class BuyController {
     @PostMapping("/cash")
     public ResponseEntity buy(@RequestBody List<ProductDto> items){
         List<com.gallego.money.entity.Product> products = new ArrayList<>();
-        items.stream().forEach(i-> products.add(new com.gallego.money.entity.Product(i.amount)));
-        checkoutService.payWithCash(new Products(products), 0l);
+        items.forEach(i-> products.add(new com.gallego.money.entity.Product(i.amount)));
+        checkoutService.payWithCash(new Products(products), 0L);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/credit")
     public ResponseEntity buyByCredit(@RequestBody BuyCreditRequest request){
-        List<com.gallego.money.entity.Product> products = new ArrayList<>();
-        products.add(new com.gallego.money.entity.Product(request.amount, request.description , request.shares));
-        checkoutService.payWithCredit(new Products(products), request.creditId,request.shares,request.amount);
+        checkoutService.payWithCredit(request);
         return ResponseEntity.ok().build();
     }
 }

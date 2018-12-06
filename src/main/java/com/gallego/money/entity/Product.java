@@ -2,10 +2,11 @@ package com.gallego.money.entity;
 
 import java.math.BigDecimal;
 
-public class Product {
+public class Product extends  Entity {
 
 
-    private BigDecimal amount, debt;
+    private BigDecimal amount;
+    private BigDecimal debt;
     private Long creditId;
     private Float interest;
     private Integer shares;
@@ -20,7 +21,17 @@ public class Product {
         this.amount = amount;
         this.description = description;
         this.shares = shares;
+
     }
+
+
+    public void deductDebt(BigDecimal d){
+        if (debt.compareTo(d) == -1){
+            throw new OverDeductionException("Deduction is grater than  debt");
+        }
+        debt=  debt.subtract(d);
+    }
+
 
     public BigDecimal getAmount() {
         return amount;
@@ -39,10 +50,6 @@ public class Product {
         return interest;
     }
 
-    public void setDebt(BigDecimal debt) {
-        this.debt = debt;
-    }
-
     public BigDecimal getDebt() {
        return  debt;
     }
@@ -57,10 +64,6 @@ public class Product {
 
 
     public void setTransactionId(Long transactionId) {
-    }
-
-    public void setCreditId(Long creditId) {
-        this.creditId = creditId;
     }
 
     public Long getCreditId() {
@@ -96,7 +99,18 @@ public class Product {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCreditId(Long creditId) {
+        this.creditId = creditId;
+    }
+
+    public void setDebt(BigDecimal debt) {
+       this.debt= amount.compareTo(debt) > -1 ? debt : amount;
+    }
+
+    public boolean equals(Object o){
+        if (o instanceof  Product){
+            return id.equals(((Product) o).getId());
+        }
+        return false;
     }
 }

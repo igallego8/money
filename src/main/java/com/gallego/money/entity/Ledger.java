@@ -35,4 +35,8 @@ public class Ledger {
     public void credit(BigDecimal amount) {
         entries.add(amount);
     }
+
+    public List<BigDecimal> getEntries(){
+        return entries;
+    }
 }

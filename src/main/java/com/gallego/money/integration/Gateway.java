@@ -1,10 +1,8 @@
 package com.gallego.money.integration;
 
-import com.gallego.money.entity.Credit;
-import com.gallego.money.entity.Ledger;
-import com.gallego.money.entity.Products;
-import com.gallego.money.entity.Transac;
+import com.gallego.money.entity.*;
 
+import java.util.Iterator;
 import java.util.List;
 
 public interface Gateway {
@@ -29,4 +27,21 @@ public interface Gateway {
     List<Credit> fetchCredits();
 
     Products fetchProducts();
+
+    void persist(User user);
+
+    User findUserBy(String userName);
+    User findUserBy(Long userId);
+
+    AppFunction findAppFunctionBy(String name);
+
+    void persist(AppFunction function);
+
+    List<License> findLicensesByUserAndFunction(User user, AppFunction function);
+
+    void persist(License license);
+
+    void update(Products products);
+
+    List<Ledger> fetchLedger();
 }

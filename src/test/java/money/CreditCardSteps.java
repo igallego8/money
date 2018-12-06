@@ -1,17 +1,19 @@
 package money;
 
 import com.gallego.money.PurchaseCreditService;
-import com.gallego.money.checkout.DeferService;
+import com.gallego.money.checkout.ReferService;
 import com.gallego.money.checkout.CheckoutService;
 import com.gallego.money.checkout.DefaultCheckoutProcess;
 import com.gallego.money.entity.*;
+import com.gallego.money.model.BuyCreditRequest;
+import com.gallego.money.model.BuyProductsCreditRequest;
+import com.gallego.money.model.CreditReferRequest;
 import com.gallego.money.payment.PaymentService;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
-import javax.sound.midi.SysexMessage;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,7 +46,14 @@ public class CreditCardSteps {
     @When("^I select number of share (\\d+)$")
     public void i_select_number_of_share(int shares) {
         CheckoutService checkoutService = createCheckoutService();
-        checkoutService.payWithCredit(new Products(Context.shoppingCart.getProducts()),creditId, shares,  Context.shoppingCart.getTotal().subtract(new BigDecimal(0)));
+        for (Product p : Context.shoppingCart.getProducts()){
+            BuyCreditRequest request =  new BuyCreditRequest();
+            request.creditId = creditId;
+            request.shares = shares;
+            request.amount = p.getAmount();
+            request.description = p.getDescription();
+            checkoutService.payWithCredit(request);
+        }
     }
 
     @Then("^I see the next credit card charge for the month (\\d+) for \"([^\"]*)\" dollars$")
@@ -80,12 +89,18 @@ public class CreditCardSteps {
     }
 
     @Given("^using a credit card with interest of \"([^\"]*)\" and number of share (\\d+)$")
-    public void using_a_credit_card_with_interest_of_and_number_of_share(String interest, int shares) throws Throwable {
+    public void using_a_credit_card_with_interest_of_and_number_of_share(String interest, int shares) {
         Iterator<Product> it=Context.shoppingCart.getProducts().iterator();
         CheckoutService checkoutService = createCheckoutService();
+
         while(it.hasNext()){
+            BuyCreditRequest request = new BuyCreditRequest();
             Product p = it.next();
-            checkoutService.payWithCredit(new Products(Arrays.asList(p)),creditId,shares,p.getAmount());
+            request.amount = p.getAmount();
+            request.shares = shares;
+            request.description = p.getDescription();
+            request.creditId = creditId;
+            checkoutService.payWithCredit(request);
         }
     }
 
@@ -119,8 +134,12 @@ public class CreditCardSteps {
 
     @When("^I defer the debt with interest of \"([^\"]*)\" and number of share (\\d+)$")
     public void i_defer_the_debt_with_interest_of_and_number_of_share(String interest, int shares) throws Throwable {
-        DeferService deferService = new DeferService();
-        deferService.defer(creditId, Float.valueOf(interest), shares);
+        ReferService referService = new ReferService();
+        CreditReferRequest referRequest = new CreditReferRequest();
+        referRequest.creditId = creditId;
+        referRequest.shares = shares;
+        referRequest.interest = Float.valueOf(interest);
+        referService.defer(referRequest);
     }
 
 

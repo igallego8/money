@@ -15,8 +15,9 @@ public class Credit {
         id = 1 + (long)(Math.random() * 10000);
     }
 
-    public Credit(BigDecimal quota, float interest) {
+    public Credit(BigDecimal quota, Float interest) {
         this.quota = quota;
+        this.debt = BigDecimal.ZERO;
         this.interest = interest;
         id = 1 + (long)(Math.random() * 10000);
     }
@@ -29,7 +30,7 @@ public class Credit {
         this.interest = interest;
     }
 
-    public float getInterest() {
+    public Float getInterest() {
         return interest;
     }
 
