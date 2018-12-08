@@ -76,6 +76,7 @@
     </dependencies>
 
     <build>
+        <finalName>aimoney</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -89,9 +90,7 @@
                     <useFile>false</useFile>
                     <useSystemClassLoader>false</useSystemClassLoader>
                     <testFailureIgnore>true</testFailureIgnore>
-
                 </configuration>
-
             </plugin>
         </plugins>
     </build>
