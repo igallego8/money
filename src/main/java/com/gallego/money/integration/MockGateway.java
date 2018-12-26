@@ -1,9 +1,11 @@
 package com.gallego.money.integration;
 
-import com.gallego.money.entity.*;
+import com.gallego.money.hex.model.entity.*;
+import com.gallego.money.exception.RegistryNotFoundException;
+import money.SavingAccount;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -15,10 +17,9 @@ public class MockGateway implements Gateway {
     List<Transac> transactsPersisted = new ArrayList<>();
     List<User> usersPersisted = new ArrayList<>();
     List<Ledger> ledgersPersisted = new ArrayList<>();
-
     List<AppFunction> functions = new ArrayList<>();
-
     List<License> licenses = new ArrayList<>();
+    private List<SavingAccount> savingAccounts= Collections.synchronizedList(new ArrayList<SavingAccount>());
 
 
     public MockGateway (){
@@ -31,20 +32,18 @@ public class MockGateway implements Gateway {
     }
 
     @Override
-    public Credit getCreditCardBy(Long id) {
+    public Credit findCreditBy(Long id) {
         System.out.println(" Credit Cards list size :: " + credits.size());
         credits.forEach(c -> System.out.println("Credit Card :: "+ c.getId()));
-        return credits.stream().filter(c-> c.getId().equals(id)).findFirst().orElseThrow(()->new RegistryNotFoundException("Credit not found"));
+        Credit credit = credits.stream().filter(c-> c.getId().equals(id)).findFirst().orElseThrow(()->new RegistryNotFoundException("Credit not found"));
+        return credit;
     }
 
     @Override
-    public void persist(Products products) {
-        Iterator<Product> it = products.iterator();
-        while(it.hasNext()){
-            Product p = it.next();
-            generateId(p);
-            productsPersisted.add(p);
-        }
+    public void persist(Product product) {
+        generateId(product);
+        productsPersisted.add(product);
+
     }
 
     @Override
@@ -59,18 +58,19 @@ public class MockGateway implements Gateway {
 
     @Override
     public void persist(Credit credit) {
+        generateId(credit);
         credits.add(credit);
+        credit.getProducts().forEach(this::persist);
     }
 
     @Override
-    public void delete(Products products) {
-        Iterator<Product> it = products.iterator();
-        it.forEachRemaining(p-> productsPersisted.remove(p));
+    public void delete(Product product) {
+        productsPersisted.remove(product);
     }
 
     @Override
-    public Products getProductsBy(Long creditId) {
-      return  new Products(productsPersisted.stream().filter(p -> p.getCreditId().equals(creditId)).collect(Collectors.toList()));
+    public List<Product> getProductsBy(Long creditId) {
+      return  productsPersisted.stream().filter(p -> p.getCreditId().equals(creditId)).collect(Collectors.toList());
     }
 
     @Override
@@ -79,8 +79,8 @@ public class MockGateway implements Gateway {
     }
 
     @Override
-    public Products fetchProducts() {
-        return  new Products(productsPersisted.stream().collect(Collectors.toList()));
+    public List<Product> fetchProducts() {
+        return  productsPersisted;
     }
 
     @Override
@@ -127,19 +127,19 @@ public class MockGateway implements Gateway {
     }
 
     @Override
-    public void update(Products products) {
-        Iterator<Product> it = products.iterator();
-        while(it.hasNext()){
-            Product product = it.next();
-            if(product.hasDebt()){
+    public void update(Product product) {
+       if ( productsPersisted.stream().anyMatch(p-> p.getId().equals(product.getId()))) {
+            if (product.hasDebt()) {
                 Product productToReplace = productsPersisted.stream().filter(p -> p.getCreditId().equals(product.getCreditId())).findFirst().get();//orElseThrow(()-> new RegistryNotFoundException("Function not found"));
                 productsPersisted.remove(productToReplace);
                 productsPersisted.add(product);
-            }else{
+            } else {
                 productsPersisted.remove(product);
             }
-
+        }else{
+           this.persist(product);
         }
+
     }
 
     @Override
@@ -147,9 +147,36 @@ public class MockGateway implements Gateway {
         return ledgersPersisted;
     }
 
+    @Override
+    public void persist(SavingAccount savingAccount) {
+        generateId(savingAccount);
+        savingAccounts.add(savingAccount);
+    }
+
+    @Override
+    public SavingAccount getSavingAccount(Long savingAccountId) {
+       return savingAccounts.stream().filter(s-> s.getId().equals(savingAccountId)).findFirst().get();
+    }
+
+    @Override
+    public void update(SavingAccount savingAccount) {
+       savingAccounts.stream().filter(a-> a.getId().equals(savingAccount.getId())).forEach(a->a.setAmount(savingAccount.getAmount()));
+    }
+
+    @Override
+    public void update(Credit credit) {
+        credits.stream().filter(c-> c.getId().equals(credit.getId())).forEach(c->{
+            c.setDebt(credit.getDebt());
+            c.setCutoffDay(credit.getCutoffDay());
+            c.setInterest(credit.getInterest());
+            credit.getProducts().forEach(this::update);
+            });
+
+    }
+
     private void generateId(Entity entity) {
        if(entity.getId() == null){
-           entity.setId(UUID.randomUUID().getLeastSignificantBits());
+           entity.setId(UUID.randomUUID().getMostSignificantBits()/1000);
         }
     }
 }

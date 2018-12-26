@@ -1,5 +1,6 @@
-package com.gallego.money.entity;
+package com.gallego.money.util;
 
+import com.gallego.money.hex.model.entity.ShoppingCart;
 import com.gallego.money.integration.Gateway;
 
 public class Context {

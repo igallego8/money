@@ -1,17 +1,15 @@
-cvFeature: Purchase credit
+Feature: Bank Deposit
 
 
-  Scenario Outline: purchase credit
-    Given buy of products for amount of "<product_amount_1>" , "<product_amount_2>" and "<product_amount_3>"
-    And using a credit card with interest of "<interest>" and number of share <shares>
-    When an debt is purchased with interest of "<purchase_interest>" and number of share <purchase_shares>
-    Then I see new credit with debt of "<debt>" and shares <purchase_shares>
-    And the old ledger must have credit for "<ledger_credit>" and new debit for "<ledger_debit>"
-
-
-
-
+  Scenario Outline: periodic deposit
+    Given a saving account with amount of "<amount>"
+    And a periodic deposit per <period_type>  of "<deposit_amount>"
+    When the time passes by <period>
+    Then I see the account balance "<amount_balance>"
+    And ledger must have credit for "<ledger_credit>"
 
     Examples:
-      |product_amount_1|product_amount_2|product_amount_3|shares|ledger_credit|ledger_debit|interest|debt|purchase_interest|purchase_shares|
-      |200             |100             |300             |5     |600          |600          |2       |0   |1               |12             |
+      |amount|period_type|period|amount_balance|ledger_credit|deposit_amount|
+      |200   |1          |1     |300           |600          |100           |
+      |200   |1          |2     |400           |600          |100           |
+      |200   |1          |10    |1200           |600          |100           |

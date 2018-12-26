@@ -1,10 +1,11 @@
 package com.gallego.money;
 
-import com.gallego.money.entity.AppFunction;
-import com.gallego.money.entity.Context;
-import com.gallego.money.entity.License;
-import com.gallego.money.entity.User;
+import com.gallego.money.hex.model.entity.AppFunction;
+import com.gallego.money.util.Context;
+import com.gallego.money.hex.model.entity.License;
+import com.gallego.money.hex.model.entity.User;
 import com.gallego.money.integration.MockGateway;
+import com.gallego.money.hex.support.security.UserService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

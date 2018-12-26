@@ -1,13 +1,13 @@
-package com.gallego.money.hex.model.refer.command;
+package com.gallego.money.hex.model.credit;
 
-import com.gallego.money.hex.model.checkout.command.CheckoutCustomInterestCredit;
-import com.gallego.money.hex.model.checkout.vo.CheckoutCreditCustomInteresRequest;
-import com.gallego.money.hex.model.payment.command.PayCredit;
-import com.gallego.money.hex.model.payment.command.TotalToPayQuery;
-import com.gallego.money.hex.model.payment.vo.PayCreditRequest;
+import com.gallego.money.hex.Command;
+import com.gallego.money.hex.model.credit.vo.CheckoutCreditCustomInteresRequest;
+import com.gallego.money.hex.model.credit.vo.PayCreditRequest;
+import com.gallego.money.hex.model.credit.vo.ReferCreditRequest;
 
 import java.math.BigDecimal;
 
+@Command
 public class ReferCredit {
 
     public  void execute (ReferCreditRequest request){

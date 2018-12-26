@@ -1,20 +1,17 @@
 package money;
 
-import com.gallego.money.UserService;
-import com.gallego.money.entity.AppFunction;
-import com.gallego.money.entity.Context;
-import com.gallego.money.entity.License;
-import com.gallego.money.entity.User;
-import cucumber.api.DataTable;
+import com.gallego.money.hex.support.security.UserService;
+import com.gallego.money.hex.model.entity.AppFunction;
+import com.gallego.money.util.Context;
+import com.gallego.money.hex.model.entity.License;
+import com.gallego.money.hex.model.entity.User;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.assertj.core.util.Arrays;
 import org.assertj.core.util.Lists;
 import org.junit.Assert;
 
 import java.util.List;
-import java.util.function.Function;
 
 public class PresentSingleFunctionSteps {
 

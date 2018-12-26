@@ -1,4 +1,4 @@
-package com.gallego.money.hex.model.ledger.command;
+package com.gallego.money.hex.model.ledger.vo;
 
 import java.math.BigDecimal;
 

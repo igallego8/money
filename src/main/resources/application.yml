@@ -5,7 +5,7 @@ spring:
     active: DEV
 ---
 server:
-  port: 8090
+  port: 809
 spring:
   application:
     name: money
@@ -15,3 +15,7 @@ spring:
   application:
     name: MONEY DEV
   profiles: DEV
+
+publisher:
+  time:
+    threads: 10

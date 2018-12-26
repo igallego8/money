@@ -2,20 +2,18 @@ package com.gallego.money.hex.model.credit.vo;
 
 import java.math.BigDecimal;
 
-public class CheckoutCreditCustomInteresRequest {
+public class CheckoutCreditRequest {
 
     private BigDecimal amount;
     private String description;
     private Long creditId;
     private Integer shares;
-    private Float interest;
 
-    public CheckoutCreditCustomInteresRequest(BigDecimal amount, String description, Long creditId, Integer shares, Float interest) {
+    public CheckoutCreditRequest(BigDecimal amount, String description, Long creditId, Integer shares) {
         this.amount = amount;
         this.description = description;
         this.creditId = creditId;
         this.shares = shares;
-        this.interest = interest;
     }
 
     public BigDecimal getAmount() {
@@ -32,9 +30,5 @@ public class CheckoutCreditCustomInteresRequest {
 
     public Integer getShares() {
         return shares;
-    }
-
-    public Float getInterest() {
-        return interest;
     }
 }

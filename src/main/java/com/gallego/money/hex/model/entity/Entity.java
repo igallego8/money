@@ -1,4 +1,4 @@
-package com.gallego.money.entity;
+package com.gallego.money.hex.model.entity;
 
 public class Entity {
     protected Long id;

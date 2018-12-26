@@ -1,4 +1,4 @@
-package com.gallego.money.hex.model.checkout.command;
+package com.gallego.money.hex;
 
 public @interface Command {
 }

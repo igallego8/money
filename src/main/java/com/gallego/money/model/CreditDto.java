@@ -8,4 +8,5 @@ public class CreditDto {
     public BigDecimal debt;
     public float interest;
     public Long id;
+    public Integer cutoffDay;
 }

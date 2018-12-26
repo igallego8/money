@@ -1,4 +1,4 @@
-package com.gallego.money.hex.model.entity;
+package com.gallego.money.exception;
 
 public class InvalidArgumentException extends RuntimeException {
     public InvalidArgumentException(String invalid_argument) {

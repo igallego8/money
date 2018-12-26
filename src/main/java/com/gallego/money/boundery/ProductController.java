@@ -1,7 +1,8 @@
 package com.gallego.money.boundery;
 
-import com.gallego.money.entity.Context;
-import com.gallego.money.entity.Product;
+import com.gallego.money.hex.model.entity.Credit;
+import com.gallego.money.util.Context;
+import com.gallego.money.hex.model.entity.Product;
 import com.gallego.money.model.ProductDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,40 +21,35 @@ public class ProductController {
 
     @GetMapping("/{creditId}")
     public ResponseEntity getProducts(@PathVariable Long creditId){
-        return ResponseEntity.ok(Context.gateway.getProductsBy(creditId).iterator());
+        return ResponseEntity.ok(Context.gateway.findCreditBy(creditId).getProducts());
     }
 
     @GetMapping
     public ResponseEntity getProducts(){
-        Iterator<Product> it = Context.gateway.fetchProducts().iterator();
+        List<Credit> credits = Context.gateway.fetchCredits();
         Map<Long, List<ProductDto>> map = new HashMap<>();
-        List<ProductDto> products;
-        while (it.hasNext()){
 
-            Product p = it.next();
-            if (!map.containsKey(p.getCreditId())){
-                products = new ArrayList<>();
-                map.put(p.getCreditId(), products);
-            }else{
-                products = map.get(p.getCreditId());
+        credits.forEach(c->  {
+            if (!map.containsKey(c.getId())){
+                map.put(c.getId(), new ArrayList<>());
             }
-
-            ProductDto dto = new ProductDto();
-            dto.debt = p.getDebt();
-            dto.shares = p.getShares() - p.getSharesPaid();
-            dto.creditId = p.getCreditId();
-            dto.description = p.getDescription();
-            dto.interest = p.getInterest();
-            products.add(dto);
-        }
-
+            for (Product p : c.getProducts()){
+                ProductDto dto = new ProductDto();
+                dto.debt = p.getDebt();
+                dto.shares = p.getShares() - p.getSharesPaid();
+                dto.creditId = p.getCreditId();
+                dto.description = p.getDescription();
+                dto.interest = p.getInterest();
+                map.get(c.getId()).add(dto);
+            }
+        });
         return ResponseEntity.ok(map.values());
     }
 
 
     @GetMapping("/{creditId}/charge")
     public ResponseEntity getNextCharge(@PathVariable Long creditId){
-        return ResponseEntity.ok(Context.gateway.getProductsBy(creditId).getNextTotalCharge());
+        return ResponseEntity.ok(new NextPaymentChargeQuery().query(creditId));
     }
 
     @GetMapping("/{creditId}/ledger")

@@ -1,4 +1,4 @@
-package com.gallego.money.entity;
+package com.gallego.money.hex.model.entity;
 
 import com.gallego.money.exception.OverDeductionException;
 import com.gallego.money.util.date.DateChangeHandler;

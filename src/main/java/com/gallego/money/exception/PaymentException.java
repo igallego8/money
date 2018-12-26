@@ -1,4 +1,4 @@
-package com.gallego.money.payment;
+package com.gallego.money.exception;
 
 public class PaymentException extends RuntimeException {
 

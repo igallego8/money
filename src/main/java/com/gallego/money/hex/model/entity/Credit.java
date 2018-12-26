@@ -1,7 +1,8 @@
-package com.gallego.money.entity;
+package com.gallego.money.hex.model.entity;
 
 import com.gallego.money.exception.InsufficientFundsException;
 import com.gallego.money.util.TimeContext;
+import com.gallego.money.util.Validations;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

@@ -1,10 +1,10 @@
-package com.gallego.money.hex.model.payment.command;
+package com.gallego.money.hex.model.credit;
 
-import com.gallego.money.entity.Credit;
-import com.gallego.money.hex.model.checkout.command.Command;
+import com.gallego.money.hex.model.credit.vo.PayCreditRequest;
+import com.gallego.money.hex.model.entity.Credit;
+import com.gallego.money.hex.Command;
 import com.gallego.money.hex.model.ledger.command.LedgerCredit;
 import com.gallego.money.hex.model.ledger.vo.LedgerCreditRequest;
-import com.gallego.money.hex.model.payment.vo.PayCreditRequest;
 import com.gallego.money.util.Context;
 
 import java.math.BigDecimal;
@@ -16,7 +16,6 @@ public class PayCredit {
         Credit credit = Context.gateway.findCreditBy(request.getCreditId());
         BigDecimal leftAmount= credit.credit(request.getAmount());
         Context.gateway.update(credit);
-        // PayCredit PAID
         new LedgerCredit().execute(new LedgerCreditRequest(request.getCreditId(),request.getAmount()));
         return leftAmount;
     }

@@ -6,4 +6,5 @@ public class CreditRequest {
     public BigDecimal amount;
     public float interest;
     public BigDecimal debt;
+    public Integer cutoffDay;
 }

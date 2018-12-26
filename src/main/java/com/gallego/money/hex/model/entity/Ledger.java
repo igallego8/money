@@ -1,4 +1,4 @@
-package com.gallego.money.entity;
+package com.gallego.money.hex.model.entity;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

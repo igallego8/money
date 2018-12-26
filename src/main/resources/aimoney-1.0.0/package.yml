@@ -1,0 +1,5 @@
+# Required Fields
+apiVersion: skipper.spring.io/v1
+kind: SkipperPackageMetadata
+name: aimoney
+version: 1.0.0

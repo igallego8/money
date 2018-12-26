@@ -1,4 +1,4 @@
-package com.gallego.money.hex.model.credit;
+package com.gallego.money.hex.model.credit.vo;
 
 import com.gallego.money.hex.Command;
 

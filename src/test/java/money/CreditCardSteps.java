@@ -1,14 +1,15 @@
 package money;
 
-import com.gallego.money.PurchaseCreditService;
-import com.gallego.money.checkout.ReferService;
-import com.gallego.money.checkout.CheckoutService;
-import com.gallego.money.checkout.DefaultCheckoutProcess;
-import com.gallego.money.entity.*;
-import com.gallego.money.model.BuyCreditRequest;
-import com.gallego.money.model.BuyProductsCreditRequest;
-import com.gallego.money.model.CreditReferRequest;
-import com.gallego.money.payment.PaymentService;
+import com.gallego.money.boundery.NextPaymentChargeQuery;
+import com.gallego.money.hex.model.credit.*;
+import com.gallego.money.hex.model.credit.vo.CheckoutCreditRequest;
+import com.gallego.money.hex.model.credit.vo.PayCreditRequest;
+import com.gallego.money.hex.model.credit.vo.PurchaseCreditRequest;
+import com.gallego.money.hex.model.credit.vo.ReferCreditRequest;
+import com.gallego.money.hex.model.entity.*;
+import com.gallego.money.util.Context;
+import com.gallego.money.util.TimeContext;
+import com.gallego.money.util.date.IncreaseMonthHandler;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -16,7 +17,6 @@ import org.junit.Assert;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -25,46 +25,42 @@ public class CreditCardSteps {
 
     private Long creditId;
     private Long old_creditId;
-
+    private BigDecimal amount;
 
     @Given("^a buy of (\\d+) dollars$")
     public void a_buy_of_dollars(int amount) {
         Context.shoppingCart = new ShoppingCart();
-        Product product =new Product(new BigDecimal(amount));
-        Context.shoppingCart.add(product);
+        this.amount = BigDecimal.valueOf(amount);
     }
 
     @Given("^using a credit card with interest of \"([^\"]*)\"$")
     public void using_a_credit_card_with_interest_of(String interest){
-        Credit credit = new Credit(new BigDecimal(100),new BigDecimal(0));
-        creditId = credit.getId();
-        credit.setInterest(Float.valueOf(interest));
-        Context.gateway.persist(new Ledger(credit.getId()));
+        Credit credit = new Credit(new BigDecimal(100),new BigDecimal(0),Float.valueOf(interest) ,1);
         Context.gateway.persist(credit);
+        creditId = credit.getId();
+        Context.gateway.persist(new Ledger(credit.getId()));
     }
 
     @When("^I select number of share (\\d+)$")
     public void i_select_number_of_share(int shares) {
-        CheckoutService checkoutService = createCheckoutService();
-        for (Product p : Context.shoppingCart.getProducts()){
-            BuyCreditRequest request =  new BuyCreditRequest();
-            request.creditId = creditId;
-            request.shares = shares;
-            request.amount = p.getAmount();
-            request.description = p.getDescription();
-            checkoutService.payWithCredit(request);
-        }
+        CheckoutCredit checkoutCredit = new CheckoutCredit();
+        Product product =new Product(amount, "Product Test",shares);
+        Context.shoppingCart.add(product);
+        Context.shoppingCart.getProducts().forEach(p->checkoutCredit.execute(new CheckoutCreditRequest(p.getAmount(),p.getDescription(),creditId,shares)));
+
     }
 
     @Then("^I see the next credit card charge for the month (\\d+) for \"([^\"]*)\" dollars$")
     public void i_see_the_next_credit_card_charge_for_the_month_for_dollars(int month, String amount){
-        Products products = Context.gateway.getProductsBy(creditId);
-        PaymentService paymentService = new PaymentService();
+
+        PayCredit payCredit = new PayCredit();
         BigDecimal overAmount = BigDecimal.ZERO;
         for (int i = 0; i < month-1; i++) {
-            overAmount = overAmount.add(paymentService.pay(creditId, products.getNextTotalCharge()));
+            TimeContext.timeHandler.change(new IncreaseMonthHandler(), 1);
+            overAmount = overAmount.add(payCredit.execute(new PayCreditRequest(creditId,new NextPaymentChargeQuery().query(creditId))));
         }
-        BigDecimal nextCharge = products.getNextTotalCharge();
+        TimeContext.timeHandler.change(new IncreaseMonthHandler(), 1);
+        BigDecimal nextCharge = new NextPaymentChargeQuery().query(creditId);
         Assert.assertEquals("Bad next charge",new BigDecimal(amount).setScale(2,BigDecimal.ROUND_HALF_UP),nextCharge.setScale(2,BigDecimal.ROUND_HALF_UP));
     }
 
@@ -77,54 +73,47 @@ public class CreditCardSteps {
 
     @Given("^buy of products for amount of \"([^\"]*)\" , \"([^\"]*)\" and \"([^\"]*)\"$")
     public void buy_of_products_for_amount_of_and(String prod1, String prod2, String prod3){
-        Credit credit = new Credit(new BigDecimal(10000),new BigDecimal(0));
-        creditId = credit.getId();
-        Context.gateway.persist(new Ledger(credit.getId()));
-        Context.gateway.persist(credit);
+
         ShoppingCart cart = new ShoppingCart();
         Context.shoppingCart = cart;
-        cart.add(new Product(new BigDecimal(prod1)));
-        cart.add(new Product(new BigDecimal(prod2)));
-        cart.add(new Product(new BigDecimal(prod3)));
+        cart.add(new Product(new BigDecimal(prod1),"Product 1",0));
+        cart.add(new Product(new BigDecimal(prod2),"Product 1",0));
+        cart.add(new Product(new BigDecimal(prod3),"Product 1",0));
     }
 
     @Given("^using a credit card with interest of \"([^\"]*)\" and number of share (\\d+)$")
     public void using_a_credit_card_with_interest_of_and_number_of_share(String interest, int shares) {
+
+        Credit credit = new Credit(new BigDecimal(10000),new BigDecimal(0),Float.valueOf(interest),30);
+        Context.gateway.persist(credit);
+        creditId = credit.getId();
+        Context.gateway.persist(new Ledger(credit.getId()));
+
         Iterator<Product> it=Context.shoppingCart.getProducts().iterator();
-        CheckoutService checkoutService = createCheckoutService();
+        CheckoutCredit checkoutCredit = new CheckoutCredit();
 
         while(it.hasNext()){
-            BuyCreditRequest request = new BuyCreditRequest();
             Product p = it.next();
-            request.amount = p.getAmount();
-            request.shares = shares;
-            request.description = p.getDescription();
-            request.creditId = creditId;
-            checkoutService.payWithCredit(request);
+            checkoutCredit.execute(new CheckoutCreditRequest(p.getAmount(),p.getDescription(),creditId,shares));
         }
     }
 
-    private CheckoutService createCheckoutService() {
-        return new CheckoutService(new DefaultCheckoutProcess());
-    }
-
-
     @When("^pay credit for (\\d+) paid$")
     public void pay_credit_for_paid(int months){
-        Products products = Context.gateway.getProductsBy(creditId);
-        PaymentService paymentService = new PaymentService();
-        for (int i = 0; i < months-1; i++) {
-            paymentService.pay(creditId, products.getNextTotalCharge());
+        PayCredit payCredit = new PayCredit();
+        for (int i = 0; i < months; i++) {
+            TimeContext.timeHandler.change(new IncreaseMonthHandler(),1);
+            payCredit.execute(new PayCreditRequest(creditId,new NextPaymentChargeQuery().query(creditId)));
         }
     }
 
     @Then("^I see the percentage of (\\d+) , (\\d+) and (\\d+)$")
     public void i_see_the_percentage_of_and(int prod1, int prod2, int prod3){
-        Products products = Context.gateway.getProductsBy(creditId);
-        Iterator<Product> it=products.iterator();
+        Credit credit = Context.gateway.findCreditBy(creditId);
+        List<Product> it=credit.getProducts();
         List<Integer> percentages = new ArrayList<>();
-        while(it.hasNext()){
-            percentages.add(it.next().percentagePaid());
+        for(Product p : it){
+            percentages.add(p.percentagePaid());
         }
         Assert.assertEquals("Wrong percentage for product 1 ",prod1,percentages.get(0).intValue());
         Assert.assertEquals("Wrong percentage for product 2 ",prod2,percentages.get(1).intValue());
@@ -133,25 +122,20 @@ public class CreditCardSteps {
 
 
     @When("^I defer the debt with interest of \"([^\"]*)\" and number of share (\\d+)$")
-    public void i_defer_the_debt_with_interest_of_and_number_of_share(String interest, int shares) throws Throwable {
-        ReferService referService = new ReferService();
-        CreditReferRequest referRequest = new CreditReferRequest();
-        referRequest.creditId = creditId;
-        referRequest.shares = shares;
-        referRequest.interest = Float.valueOf(interest);
-        referService.defer(referRequest);
+    public void i_defer_the_debt_with_interest_of_and_number_of_share(String interest, int shares) {
+        ReferCredit referCredit = new ReferCredit();
+        referCredit.execute(new ReferCreditRequest(creditId,shares,Float.valueOf(interest)));
     }
 
 
 
     @When("^an debt is purchased with interest of \"([^\"]*)\" and number of share (\\d+)$")
     public void an_debt_is_purchased_with_interest_of_and_number_of_share(String interest, int shares) {
-        Products products = Context.gateway.getProductsBy(creditId);
-        PurchaseCreditService purchaseCreditService = new PurchaseCreditService();
-        Credit newCredit =purchaseCreditService.purchase(creditId, products.getTotalDebt(), shares, Float.valueOf(interest));
+        TotalCreditDebtQuery totalDebtQuery = new TotalCreditDebtQuery();
+        PurchaseCredit purchaseCredit = new PurchaseCredit();
+        Credit newCredit = purchaseCredit.execute(new PurchaseCreditRequest(creditId, totalDebtQuery.query(creditId), shares, Float.valueOf(interest), 15));
         old_creditId = creditId;
         creditId = newCredit.getId();
-
     }
 
     @Then("^I see new credit with debt of \"([^\"]*)\" and shares (\\d+)$")

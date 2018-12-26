@@ -1,9 +1,9 @@
 package money;
 
 
-import com.gallego.money.entity.Context;
-import com.gallego.money.entity.Product;
-import com.gallego.money.entity.ShoppingCart;
+import com.gallego.money.util.Context;
+import com.gallego.money.hex.model.entity.Product;
+import com.gallego.money.hex.model.entity.ShoppingCart;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -23,7 +23,7 @@ public class ShippingCartSteps {
     @When("^I add product to shipping card$")
     public void i_add_product_to_shipping_card() throws Throwable {
         for (int x = 0; x < 10;  x++) {
-            Context.shoppingCart.add(new Product(new BigDecimal(40)));
+            Context.shoppingCart.add(new Product(new BigDecimal(40),"Product 1",0));
         }
     }
 

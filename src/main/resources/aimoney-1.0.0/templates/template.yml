@@ -1,0 +1,15 @@
+apiVersion: skipper.spring.io/v1
+kind: SpringCloudDeployerApplication
+metadata:
+  name: aimoney
+spec:
+  resource: docker:idgallego/aimoney
+  version: {{imageVersion}}
+  applicationProperties:
+    {{#spec.applicationProperties.entrySet}}
+    {{key}}: {{value}}
+    {{/spec.applicationProperties.entrySet}}
+  deploymentProperties:
+    {{#spec.deploymentProperties.entrySet}}
+    {{key}}: {{value}}
+    {{/spec.deploymentProperties.entrySet}}

@@ -8,4 +8,5 @@ public class BuyCreditRequest {
     public String description;
     public Long creditId;
     public Integer shares;
+
 }

@@ -1,11 +1,14 @@
 package com.gallego.money.boundery;
 
-import com.gallego.money.entity.Context;
-import com.gallego.money.entity.Products;
+import com.gallego.money.hex.model.entity.Product;
+import com.gallego.money.util.Context;
+
+import java.util.List;
 
 
 public class CreditProductSearchService {
-    public Products search(Long creditId) {
-        return Context.gateway.getProductsBy(creditId);
+
+    public List<Product> search(Long creditId) {
+        return Context.gateway.findCreditBy(creditId).getProducts();
     }
 }

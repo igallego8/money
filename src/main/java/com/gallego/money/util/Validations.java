@@ -1,4 +1,6 @@
-package com.gallego.money.hex.model.entity;
+package com.gallego.money.util;
+
+import com.gallego.money.exception.InvalidArgumentException;
 
 public class Validations {
     public static void validateArgument(boolean b) {

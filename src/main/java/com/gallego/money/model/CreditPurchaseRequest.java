@@ -7,4 +7,6 @@ public class CreditPurchaseRequest {
     public Float interest;
     public int shares;
     public BigDecimal amount;
+    public Long creditId;
+    public Integer cutoffDay;
 }

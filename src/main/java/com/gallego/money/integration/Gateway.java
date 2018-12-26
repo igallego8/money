@@ -1,36 +1,39 @@
 package com.gallego.money.integration;
 
-import com.gallego.money.entity.*;
+import com.gallego.money.hex.model.entity.*;
+import money.SavingAccount;
 
-import java.util.Iterator;
 import java.util.List;
 
 public interface Gateway {
 
     Ledger getLedger(Long id);
 
-    Credit getCreditCardBy(Long id);
+    Credit findCreditBy(Long id);
 
-    void persist(Products products);
+    void persist(Product product);
+    void delete(Product product);
+    void update(Product product);
+    List<Product> fetchProducts();
+    List<Product> getProductsBy(Long creditId);
+
+
 
     void persist(Transac transac);
 
     void persist(Ledger ledger);
+    List<Ledger> fetchLedger();
+
 
     void persist(Credit credit);
-
-    void delete(Products products);
-
-    Products getProductsBy(Long creditId);
-
-
     List<Credit> fetchCredits();
+    void update(Credit credit);
 
-    Products fetchProducts();
 
     void persist(User user);
 
     User findUserBy(String userName);
+
     User findUserBy(Long userId);
 
     AppFunction findAppFunctionBy(String name);
@@ -41,7 +44,10 @@ public interface Gateway {
 
     void persist(License license);
 
-    void update(Products products);
+    void persist(SavingAccount savingAccount);
 
-    List<Ledger> fetchLedger();
+    SavingAccount getSavingAccount(Long savingAccountId);
+
+    void update(SavingAccount savingAccount);
+
 }

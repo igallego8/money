@@ -1,9 +1,9 @@
-package com.gallego.money.security;
+package com.gallego.money.hex.support.security;
 
-import com.gallego.money.entity.AppFunction;
+import com.gallego.money.hex.model.entity.AppFunction;
 import com.gallego.money.util.Context;
-import com.gallego.money.entity.License;
-import com.gallego.money.entity.User;
+import com.gallego.money.hex.model.entity.License;
+import com.gallego.money.hex.model.entity.User;
 
 import java.util.List;
 

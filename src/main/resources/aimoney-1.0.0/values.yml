@@ -1,0 +1,8 @@
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates
+imageVersion: 1.0.0
+spec:
+  applicationProperties:
+    server.port: 8091
+  deploymentProperties:
+    server.port: 8100

@@ -1,4 +1,9 @@
 package money;
 
-public class MoneyTask {
+import java.util.List;
+
+public interface MoneyTask  {
+    void process();
+
+
 }

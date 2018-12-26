@@ -1,4 +1,4 @@
-package com.gallego.money.hex.model;
+package com.gallego.money.hex;
 
 public @interface Query {
 }

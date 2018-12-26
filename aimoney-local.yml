@@ -1,0 +1,9 @@
+spec:
+  resource: docker:igallego/aimoney
+  version: 1.0.0.RELEASE
+  applicationProperties:
+    server.port: 8100
+    endpoints.sensitive: false
+    helloworld.greeting: yo
+  deploymentProperties:
+    spring.cloud.deployer.memory: 2048m

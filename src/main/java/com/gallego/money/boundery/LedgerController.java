@@ -1,10 +1,8 @@
 package com.gallego.money.boundery;
 
-import com.gallego.money.entity.Context;
-import com.gallego.money.entity.Ledger;
-import com.gallego.money.entity.Product;
+import com.gallego.money.util.Context;
+import com.gallego.money.hex.model.entity.Ledger;
 import com.gallego.money.model.LedgerDto;
-import com.gallego.money.model.ProductDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;

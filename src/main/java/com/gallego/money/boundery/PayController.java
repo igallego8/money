@@ -1,8 +1,9 @@
 package com.gallego.money.boundery;
 
 
+import com.gallego.money.hex.model.credit.PayCredit;
+import com.gallego.money.hex.model.credit.vo.PayCreditRequest;
 import com.gallego.money.model.PayRequest;
-import com.gallego.money.payment.PaymentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,16 +15,17 @@ import javax.annotation.PostConstruct;
 @RequestMapping("/pay")
 public class PayController {
 
-    PaymentService paymentService;
+    PayCredit payCredit;
 
     @PostConstruct
     public  void  init(){
-        paymentService = new PaymentService();
+        payCredit = new PayCredit();
     }
 
     @PostMapping
     public ResponseEntity pay(@RequestBody PayRequest request){
-        paymentService.pay(request.creditId, request.amount);
+        PayCreditRequest r = new PayCreditRequest(request.creditId, request.amount);
+        payCredit.execute(r);
         return  ResponseEntity.ok().build();
     }
 }

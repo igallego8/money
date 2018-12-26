@@ -1,4 +1,8 @@
 package com.gallego.money.exception;
 
-public class InsufficientFundsException {
+public class InsufficientFundsException extends RuntimeException {
+
+    public InsufficientFundsException(String msg) {
+        super(msg);
+    }
 }

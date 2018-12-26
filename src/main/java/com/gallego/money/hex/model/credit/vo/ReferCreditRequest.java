@@ -1,4 +1,4 @@
-package com.gallego.money.hex.model.credit;
+package com.gallego.money.hex.model.credit.vo;
 
 public class ReferCreditRequest {
     private Long creditId;

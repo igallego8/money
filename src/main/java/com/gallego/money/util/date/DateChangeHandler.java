@@ -1,4 +1,4 @@
-package com.gallego.money.entity;
+package com.gallego.money.util.date;
 
 import java.time.LocalDate;
 

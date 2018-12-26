@@ -1,6 +1,6 @@
-package com.gallego.money;
+package com.gallego.money.util.date;
 
-import com.gallego.money.entity.DateChangeHandler;
+import com.gallego.money.util.date.DateChangeHandler;
 
 import java.time.LocalDate;
 

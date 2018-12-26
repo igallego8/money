@@ -1,11 +1,10 @@
-package com.gallego.money.hex.model.purchase.command;
+package com.gallego.money.hex.model.credit;
 
-import com.gallego.money.entity.Credit;
-import com.gallego.money.hex.model.checkout.command.CheckoutCredit;
-import com.gallego.money.hex.model.checkout.command.Command;
-import com.gallego.money.hex.model.checkout.vo.CheckoutCreditRequest;
-import com.gallego.money.hex.model.payment.command.PayCredit;
-import com.gallego.money.hex.model.payment.vo.PayCreditRequest;
+import com.gallego.money.hex.model.credit.vo.PayCreditRequest;
+import com.gallego.money.hex.model.entity.Credit;
+import com.gallego.money.hex.Command;
+import com.gallego.money.hex.model.credit.vo.CheckoutCreditRequest;
+import com.gallego.money.hex.model.credit.vo.PurchaseCreditRequest;
 import com.gallego.money.util.Context;
 
 @Command
